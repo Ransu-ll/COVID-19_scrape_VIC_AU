@@ -1,17 +1,5 @@
 """A module for scraping COVID-19 data from the VIC, AUS government.
 
-Specifically, this file takes info from a Google Spreadsheet that
-contains information about each suburb's COVID-19 data and
-interprets it so that data becomes information. Then that info
-can be sent to a webhook URL.
-
-Once upon a time, a person living in Victoria was curious about
-scraping data from the internet. One day, said person found a
-spreadsheet containing COVID-19 data for Victorian government
-and so decided that he wanted to find a way to get this data
-and post it onto a Discord channel via webhooks. Thus, this
-project was born.
-
 In the event that the format of the source table changes, this module
 will cease to work until it is updated to interpret new source table
 format.
