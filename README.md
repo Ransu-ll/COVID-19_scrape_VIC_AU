@@ -1,13 +1,20 @@
 # COVID-19_scrape_VIC_AU
 
-This project scrapes information from a [Google Spreadsheet](https://docs.google.com/spreadsheets/d/e/2PACX-1vTwXSqlP56q78lZKxc092o6UuIyi7VqOIQj6RM4QmlVPgtJZfbgzv0a3X7wQQkhNu8MFolhVwMy4VnF/pub) containing each suburb's COVID-19 infection rates from Victoria, Australia, writing it to a `.csv` file, one that looks like the file `/data/SAMPLE.csv`. From there, the program reads the `.csv` file and can determine information about each column. That information can then be sent to a service that supports webhook, such as Discord.
+This project scrapes information from a [Google Spreadsheet](https://docs.google.com/spreadsheets/d/e/2PACX-1vTwXSqlP56q78lZKxc092o6UuIyi7VqOIQj6RM4QmlVPgtJZfbgzv0a3X7wQQkhNu8MFolhVwMy4VnF/pub) 
+containing each suburb's COVID-19 infection rates from Victoria, Australia, writing it to a `.csv` file, one that looks 
+like the file `/data/SAMPLE.csv`. From there, the program reads the `.csv` file and can determine information about each
+column. That information can then be sent to a service that supports webhook, such as Discord.
 
 ---
 ## Getting started
 
 To begin, clone this repository, then create a `.env` file with the keyword `URL_WEBHOOK` being a valid webhook link.
 
-From here, you can take a look at `scrapedataandsend.py` - it imports `mainmodule.py` and contains a demonstration of how to use `mainmodule.py` to scrape the data and obtain information from it.
+From here, you can take a look at `scrapedataandsend.py` - it imports `mainmodule.py` and contains a demonstration of 
+how to use `mainmodule.py` to scrape the data and obtain information from it.  
+`scrapedataandsend.py` displays most of the features you will likely need - how to tell the program to remove any old 
+files (no more than 25 files by default), scrape data (and which file to write to), interpret the data, determine if the
+data has already been updated and if not, create a new file and send webhooks to a certain URL.
 
 ---
 ## How did this project come about? 
