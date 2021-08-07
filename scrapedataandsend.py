@@ -15,8 +15,8 @@ try:
     if sd.updatedData:
         sd.webhook(f"Last updated: {processedDate}" + "\n" + f"Data date: {dataDate}", [sd.DiscordMarkup.UNDERLINE])
         sd.webhook("Active cases areas:\n(format: postcode - # of cases)", [sd.DiscordMarkup.CODEBLOCK],
-                   sd.take_info(sd.fName, sd.ColNames.ACTIVE_CASES, sd.Settings.REFINED), [sd.DiscordMarkup.BOLDED],
-                   sep="")
+                   sd.take_info(sd.fName, sd.ColNames.ACTIVE_CASES, sd.Settings.REFINED),
+                   [sd.DiscordMarkup.BOLDED], sep="")
         sd.webhook("Total active cases:", [sd.DiscordMarkup.CODEBLOCK],
                    sd.take_info(sd.fName, sd.ColNames.ACTIVE_CASES, sd.Settings.SUM),
                    [sd.DiscordMarkup.BOLDED], sep="")
