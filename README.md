@@ -8,7 +8,8 @@ column. That information can then be sent to a service that supports webhook, su
 ---
 ## Getting started
 
-To begin, clone this repository, then create a `.env` file with the keyword `URL_WEBHOOK` being a valid webhook link.
+To begin, clone this repository, then create a `.env` file with keywords `WEBHOOK_ID` and `WEBHOOK_TOKEN` equal to the ID and the Token of the webhook link, respectively.
+The URL webhook link should be in the format of https://discordapp.com/api/webhooks/ID/TOKEN.
 
 From here, you can take a look at `scrapedataandsend.py` - it imports `mainmodule.py` and contains a demonstration of 
 how to use `mainmodule.py` to scrape the data and obtain information from it.  

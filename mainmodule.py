@@ -31,6 +31,7 @@ import sys
 import time
 from enum import Enum, auto
 
+import discord
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -40,7 +41,6 @@ load_dotenv()
 
 # General variables
 currTime = time.strftime("%Y%m%d-%H%M%S", time.localtime())
-urlWebhook = os.environ.get("URL_WEBHOOK")
 sourceSS = "https://docs.google.com/spreadsheets/d/e/2PACX" \
            "-1vTwXSqlP56q78lZKxc092o6UuIyi7VqOIQj6RM4QmlVPgtJZfbgzv0a3X7wQQkhNu8MFolhVwMy4VnF/pub"
 postcodeInfo = """
@@ -51,8 +51,14 @@ Note: postcodes
 Source: <https://www.dhhs.vic.gov.au/victorian-coronavirus-covid-19-data>
 """  # Interpret the postcodes
 
-updatedData = False
-# Do not modify the above variable - it is used to determine if the data has been updated by the date.
+# Webhook variables
+urlID = int(os.environ.get("WEBHOOK_ID"))
+urlToken = os.environ.get("WEBHOOK_TOKEN")
+WHUsername = "COVID update"
+WHAvatar = "https://cdn.discordapp.com/attachments/762567501023281203/855114581571272724/cursedemoji.png"
+
+# DO NOT MODIFY:
+updatedData = False  # Used to determine if the data has been updated by the date.
 
 # Directory variables
 if sys.argv[0] == "C:\\Program Files\\JetBrains\\PyCharm 2021.1.3\\plugins\\python\\helpers\\pydev\\pydevconsole.py":
@@ -320,15 +326,19 @@ def wrap(self: list):
 
 def webhook(body: str, wrap_body: list = None,
             command: take_info = None, wrap_command: List[DiscordMarkup] = None,
-            url: str = urlWebhook, sep="\n"):
+            id_url: int = urlID, token_url: str = urlToken,
+            wh_user: str = WHUsername, wh_avatar: str = WHAvatar,
+            sep="\n"):
     """This is a POST request to any URL that supports webhooks.
 
     `body` is the message that will be sent prior to `command`.
-    `wrapBody` is what the `body` should be wrapped in for formatting
+    `wrap_body` is what the `body` should be wrapped in for formatting.
     `command` is the command as specified by the takeInfo function.
-    `wrapCommand` is similar to `wrapBody`, but for `command`.
-    `url` can be used to specify a custom URL to send the webhook to,
-    but otherwise uses the specified global url variable.
+    `wrap_command` is similar to `wrapBody`, but for `command`.
+    `id_url` is the ID of the webhook link.
+    `token_url` is the token of the webhook link.
+    `wh_user` is the display name to be used.
+    `wh_avatar` is the avatar to be displayed - must be a URL.
     `sep` is the variable used to separate the `body` and `command`.
     """
 
@@ -342,7 +352,7 @@ def webhook(body: str, wrap_body: list = None,
         # The 0 is there in case the command returns 0, which is seen
         # as "False", and 0 is a value that needs to be wrapped
         # around.
-        raise Exception("No command, yet there is a wrapCommand variable")
+        raise Exception("No command, yet there is a wrap_command variable")
 
     if wrap_command:
         # Wrap the command in something to format it for display.
@@ -353,23 +363,7 @@ def webhook(body: str, wrap_body: list = None,
         # for use in the POST request.
         body = body + sep + str(command)
 
-    while True:
-        response = requests.post(
-            url=url,
-            json={'username': "COVID update!",
-                  'avatar_url': "https://cdn.discordapp.com/attachments/762567501023281203/855114581571272724"
-                                "/cursedemoji.png",
-                  'content': body}
-        )
-        # Handle the "Too many requests" error.
-        # If you're getting this error you should probably tone down
-        # on the requests you make.
-        if response.status_code == 429:
-            print(f'Response 429, will request in {response.headers["X-RateLimit-Reset-After"]}')
-            time.sleep(float(response.headers["X-RateLimit-Reset-After"]))
-        elif response.status_code != 204:
-            raise Exception(f"There has been an error. Response code {response.status_code}. Response headers: "
-                            f"{response.headers}")
-        else:
-            break
-    return response
+    hook = discord.Webhook.partial(id_url, token_url, adapter=discord.RequestsWebhookAdapter())
+    hook.send(body, username=wh_user, avatar_url=wh_avatar)
+
+    return hook
