@@ -34,7 +34,6 @@ from enum import Enum, auto
 import requests
 from bs4 import BeautifulSoup
 
-
 # General variables
 currTime = time.strftime("%Y%m%d-%H%M%S", time.localtime())  # Best not to change, gives .csv files unique names
 postcodeInfo = """
@@ -74,14 +73,17 @@ if not os.path.exists(dataDirectory):
     os.makedirs(dataDirectory)
 
 
-def clear_old():
-    global lastFile
+def get_file_list(include_samples: bool = False):
+    """Obtain a list of .csv files within the dataDirectory folder. Returns list.
 
+    `include_samples` determines whether or not to include sample
+    files in the list. Default is False.
+    """
+
+    global lastFile
     list_of_files = os.listdir(dataDirectory)
 
-    # Ensure that this entire program won't crash if the SAMPLE.csv
-    # file is deleted on accident.
-    if "SAMPLE.csv" in list_of_files:
+    if "SAMPLE.csv" in list_of_files and not include_samples:
         list_of_files.remove("SAMPLE.csv")  # SAMPLE.csv is an example of the format.
 
     full_path = [dataDirectory + f"\\{x}" for x in list_of_files if x.endswith(".csv")]
@@ -89,8 +91,26 @@ def clear_old():
     # If there is 1 or more files of the .csv type, execute following.
     if full_path:
         lastFile = full_path[-1]
-        if len(list_of_files) == 25:
-            oldest_file = min(full_path, key=os.path.getctime)
+        return full_path
+    else:
+        return
+
+
+def clear_old(files: list = get_file_list(), file_count: int = 30):
+    """Clear all the old files in a specified directory.
+
+    `files` is the list of files to process
+    `file_count` is the maximum number of files that should be in the
+    directory. Default is 30.
+
+    Do note that this function is flawed as if there are, say, 32
+    files in a directory, it would only delete the 32nd file for a
+    total of 31 files.
+    """
+    # If there is 1 or more files of the .csv type, execute following.
+    if files:
+        if len(files) == file_count:
+            oldest_file = min(files, key=os.path.getctime)
             os.remove(oldest_file)
     else:
         return
