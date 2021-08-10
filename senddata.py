@@ -1,3 +1,5 @@
+"""A module for sending the scraped data to a webhook link"""
+
 from enum import Enum
 import os
 import discord
