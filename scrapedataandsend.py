@@ -1,29 +1,30 @@
-import scrapedata as sd
+import scrapedata as scd
+import senddata as sed
 
 
-sd.clear_old()
-sd.scrape_data(sd.fName)
-dataDate = sd.date_info(sd.fName)['dataDate']
-processedDate = sd.date_info(sd.fName)['processedDate']
+scd.clear_old()
+scd.scrape_data(scd.fName)
+dataDate = scd.date_info(scd.fName)['dataDate']
+processedDate = scd.date_info(scd.fName)['processedDate']
 
 print(f"Processed date: {processedDate} | Data date: {dataDate}")
-print("Active cases areas:", sd.take_info(sd.fName, sd.ColNames.ACTIVE_CASES, sd.Settings.REFINED), sep="\n")
-print("Active cases:", sd.take_info(sd.fName, sd.ColNames.ACTIVE_CASES, sd.Settings.SUM), sep=" ")
-print("New cases:", sd.take_info(sd.fName, sd.ColNames.NEW_CASES, sd.Settings.SUM, sep="\n"), sep=" ")
+print("Active cases areas:", scd.take_info(scd.fName, scd.ColNames.ACTIVE_CASES, scd.Settings.REFINED), sep="\n")
+print("Active cases:", scd.take_info(scd.fName, scd.ColNames.ACTIVE_CASES, scd.Settings.SUM), sep=" ")
+print("New cases:", scd.take_info(scd.fName, scd.ColNames.NEW_CASES, scd.Settings.SUM, sep="\n"), sep=" ")
 
 try:
-    if sd.updatedData:
-        sd.webhook(f"Last updated: {processedDate}" + "\n" + f"Data date: {dataDate}", [sd.DiscordMarkup.UNDERLINE])
-        sd.webhook("Active cases areas:\n(format: postcode - # of cases)", [sd.DiscordMarkup.CODEBLOCK],
-                   sd.take_info(sd.fName, sd.ColNames.ACTIVE_CASES, sd.Settings.REFINED),
-                   [sd.DiscordMarkup.BOLDED], sep="")
-        sd.webhook("Total active cases:", [sd.DiscordMarkup.CODEBLOCK],
-                   sd.take_info(sd.fName, sd.ColNames.ACTIVE_CASES, sd.Settings.SUM),
-                   [sd.DiscordMarkup.BOLDED], sep="")
-        sd.webhook("Total new cases:", [sd.DiscordMarkup.CODEBLOCK],
-                   sd.take_info(sd.fName, sd.ColNames.NEW_CASES, sd.Settings.SUM),
-                   [sd.DiscordMarkup.BOLDED], sep="")
-        sd.webhook(sd.postcodeInfo)
+    if scd.updatedData:
+        sed.webhook(f"Last updated: {processedDate}" + "\n" + f"Data date: {dataDate}", [sed.DiscordMarkup.UNDERLINE])
+        sed.webhook("Active cases areas:\n(format: postcode - # of cases)", [sed.DiscordMarkup.CODEBLOCK],
+                    scd.take_info(scd.fName, scd.ColNames.ACTIVE_CASES, scd.Settings.REFINED),
+                    [sed.DiscordMarkup.BOLDED], sep="")
+        sed.webhook("Total active cases:", [sed.DiscordMarkup.CODEBLOCK],
+                    scd.take_info(scd.fName, scd.ColNames.ACTIVE_CASES, scd.Settings.SUM),
+                    [sed.DiscordMarkup.BOLDED], sep="")
+        sed.webhook("Total new cases:", [sed.DiscordMarkup.CODEBLOCK],
+                    scd.take_info(scd.fName, scd.ColNames.NEW_CASES, scd.Settings.SUM),
+                    [sed.DiscordMarkup.BOLDED], sep="")
+        sed.webhook(scd.postcodeInfo)
         print("Webhooks sent!")
     else:
         print("Webhooks not sent.")
