@@ -73,9 +73,10 @@ if not os.path.exists(dataDirectory):
     os.makedirs(dataDirectory)
 
 
-def get_file_list(include_samples: bool = False):
+def get_file_list(file_ext: str, include_samples: bool = False):
     """Obtain a list of .csv files within the dataDirectory folder. Returns list.
 
+    `file_ext` is the file extension needed. Ex. ".csv" or ".png"
     `include_samples` determines whether or not to include sample
     files in the list. Default is False.
     """
@@ -86,7 +87,7 @@ def get_file_list(include_samples: bool = False):
     if "SAMPLE.csv" in list_of_files and not include_samples:
         list_of_files.remove("SAMPLE.csv")  # SAMPLE.csv is an example of the format.
 
-    full_path = [dataDirectory + f"\\{x}" for x in list_of_files if x.endswith(".csv")]
+    full_path = [dataDirectory + f"\\{x}" for x in list_of_files if x.endswith(file_ext)]
 
     # If there is 1 or more files of the .csv type, execute following.
     if full_path:
@@ -96,7 +97,7 @@ def get_file_list(include_samples: bool = False):
         return
 
 
-def clear_old(files: list = get_file_list(), file_count: int = 30):
+def clear_old(files: list = get_file_list(".csv"), file_count: int = 30):
     """Clear all the old files in a specified directory.
 
     `files` is the list of files to process

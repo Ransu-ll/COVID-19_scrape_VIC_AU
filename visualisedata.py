@@ -7,7 +7,7 @@ activeList = []
 newList = []
 dateList = []
 
-for file in sd.get_file_list():
+for file in sd.get_file_list(".csv"):
     activeList.append(sd.take_info(file, sd.ColNames.ACTIVE_CASES, sd.Settings.SUM))
     newList.append(sd.take_info(file, sd.ColNames.NEW_CASES, sd.Settings.SUM))
     dateList.append(sd.date_info(file)["dataDate"])
