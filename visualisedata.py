@@ -26,4 +26,9 @@ def create_visual():
     # Bar labels
     plt.bar_label(active, label_type="edge")
     plt.bar_label(total, label_type="edge")
-    plt.savefig(f'{sd.dataDirectory}\\{sd.currTime}.png', dpi=300, bbox_inches="tight")
+
+    # Save file
+    file_location = f'{sd.dataDirectory}\\{sd.currTime}.png'
+    plt.savefig(file_location, dpi=300, bbox_inches="tight")
+
+    return file_location

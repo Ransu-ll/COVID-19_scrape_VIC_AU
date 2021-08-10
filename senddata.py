@@ -37,9 +37,9 @@ def wrap(self: list):
 
 def webhook(body: str, wrap_body: list = None,
             command: sd.take_info = None, wrap_command: List[DiscordMarkup] = None,
-            id_url: int = urlID, token_url: str = urlToken,
-            wh_user: str = WHUsername, wh_avatar: str = WHAvatar,
-            sep="\n"):
+            file: str = None, id_url: int = urlID,
+            token_url: str = urlToken, wh_user: str = WHUsername,
+            wh_avatar: str = WHAvatar, sep="\n"):
     """This is a POST request to any URL that supports webhooks.
 
     `body` is the message that will be sent prior to `command`.
@@ -74,7 +74,11 @@ def webhook(body: str, wrap_body: list = None,
         # for use in the POST request.
         body = body + sep + str(command)
 
+    if file:
+        with open(file=file, mode="rb") as f:
+            file = discord.File(f)
+
     hook = discord.Webhook.partial(id_url, token_url, adapter=discord.RequestsWebhookAdapter())
-    hook.send(body, username=wh_user, avatar_url=wh_avatar)
+    hook.send(body, username=wh_user, avatar_url=wh_avatar, file=file)
 
     return hook

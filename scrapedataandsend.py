@@ -26,8 +26,8 @@ try:
                     scd.take_info(scd.fName, scd.ColNames.NEW_CASES, scd.Settings.SUM),
                     [sed.DiscordMarkup.BOLDED], sep="")
         sed.webhook(scd.postcodeInfo)
-        vid.create_visual()
-
+        fileLocation = vid.create_visual()
+        sed.webhook("", file=fileLocation)
         print("Webhooks sent!")
     else:
         print("Webhooks not sent.")

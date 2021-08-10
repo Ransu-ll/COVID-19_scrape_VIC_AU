@@ -66,7 +66,6 @@ else:
 # Task Scheduler on Windows.
 dataDirectory = fDirectory + "\\data"
 fName = dataDirectory + f"\\{currTime}.csv"
-lastFile = None
 # If data directory does not exist, create it.
 
 if not os.path.exists(dataDirectory):
@@ -81,7 +80,6 @@ def get_file_list(file_ext: str, include_samples: bool = False):
     files in the list. Default is False.
     """
 
-    global lastFile
     list_of_files = os.listdir(dataDirectory)
 
     if "SAMPLE.csv" in list_of_files and not include_samples:
@@ -91,7 +89,6 @@ def get_file_list(file_ext: str, include_samples: bool = False):
 
     # If there is 1 or more files of the .csv type, execute following.
     if full_path:
-        lastFile = full_path[-1]
         return full_path
     else:
         return
@@ -194,6 +191,7 @@ def scrape_data(file: str, url_spreadsheet: str = sourceSS):
         # Compare dates between last collected data and currently
         # collected data. If they are the same, rename fName to use the
         # last file's date, else write new file.
+        lastFile = get_file_list(".csv")[-1]
         if date_info(lastFile)["processedDate"] == to_write_to[1][8]:
             global fName
             fName = lastFile
