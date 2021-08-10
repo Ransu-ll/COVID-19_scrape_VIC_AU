@@ -1,4 +1,4 @@
-import mainmodule as sd
+import scrapedata as sd
 
 
 sd.clear_old()
