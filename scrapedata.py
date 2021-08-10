@@ -36,9 +36,7 @@ from bs4 import BeautifulSoup
 
 
 # General variables
-currTime = time.strftime("%Y%m%d-%H%M%S", time.localtime())
-sourceSS = "https://docs.google.com/spreadsheets/d/e/2PACX" \
-           "-1vTwXSqlP56q78lZKxc092o6UuIyi7VqOIQj6RM4QmlVPgtJZfbgzv0a3X7wQQkhNu8MFolhVwMy4VnF/pub"
+currTime = time.strftime("%Y%m%d-%H%M%S", time.localtime())  # Best not to change, gives .csv files unique names
 postcodeInfo = """
 Note: postcodes
 - 3999 is used if a case is detected but postcode is not available.
@@ -49,6 +47,10 @@ Source: <https://www.dhhs.vic.gov.au/victorian-coronavirus-covid-19-data>
 
 # DO NOT MODIFY:
 updatedData = False  # Used to determine if the data has been updated by the date.
+sourceSS = "https://docs.google.com/spreadsheets/d/e/2PACX" \
+           "-1vTwXSqlP56q78lZKxc092o6UuIyi7VqOIQj6RM4QmlVPgtJZfbgzv0a3X7wQQkhNu8MFolhVwMy4VnF/pub"
+# Above: Where the spreadsheet is located
+
 
 # Directory variables
 if sys.argv[0] == "C:\\Program Files\\JetBrains\\PyCharm 2021.1.3\\plugins\\python\\helpers\\pydev\\pydevconsole.py":
