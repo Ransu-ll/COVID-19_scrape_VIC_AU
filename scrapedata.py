@@ -191,7 +191,10 @@ def scrape_data(file: str, url_spreadsheet: str = sourceSS):
         # Compare dates between last collected data and currently
         # collected data. If they are the same, rename fName to use the
         # last file's date, else write new file.
-        lastFile = get_file_list(".csv")[-1]
+        try:
+            lastFile = get_file_list(".csv")[-1]
+        except TypeError:
+            lastFile = None
         if date_info(lastFile)["processedDate"] == to_write_to[1][8]:
             global fName
             fName = lastFile
