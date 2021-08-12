@@ -256,7 +256,8 @@ def take_info(file: str, column: ColNames, setting: Settings, sep="\n"):
     `file` is the location of the csv file
     `column` is the column to be selected
     `setting` has four possible options: raw, sum, postcodes and
-    refined
+    refined.
+    raw -> dict, sum -> int, postcodes -> str, refined -> str
     `sep` is the separator between each piece of data (if applicable)
     
     Column info can be found below:
