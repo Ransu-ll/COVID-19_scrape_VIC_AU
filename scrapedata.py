@@ -32,7 +32,7 @@ sourceSS = "https://docs.google.com/spreadsheets/d/e/2PACX" \
 
 
 # Directory variables
-if sys.argv[0] == "C:\\Program Files\\JetBrains\\PyCharm 2021.1.3\\plugins\\python\\helpers\\pydev\\pydevconsole.py":
+if sys.argv[0].endswith("pydevconsole.py"):
     # For some reason, sys.argv[0] does not return the location of this script when ran in the PyCharm
     # console, hence the need for this.
     fDirectory = os.getcwd()
