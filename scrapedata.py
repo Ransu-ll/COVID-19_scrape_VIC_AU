@@ -5,26 +5,6 @@ will cease to work until it is updated to interpret new source table
 format.
 """
 
-# - v1 was the first file which introduced the basic scraping
-# functionality, cleanup of the scraped file and analysis
-# of the resulting data.
-# - v2 added the webhooks feature.
-# - v3 enhanced the webhooks feature, makes use of dotenv and
-# moves all data to the folder ./data and creates multiple files
-# instead of modifying the same two files.
-# - v4 only creates one file instead of two (one for raw data,
-# another for sanitised data), integrates sanitising of data and
-# limits the number of created files.
-# - v5 (CURRENT) formats this file to follow PEP8 conventions
-# and also removes those relative file references to allow for
-# invoking this file with a different working directory. This version
-# also sorts the source data. It further enhances the webhook to
-# handle the Too Many Requests (429) error to resend it after enough
-# time has passed.
-
-# I probably should have used Github for this, but hey, regretting
-# life choices is part of life!
-
 import csv
 import os
 import sys
@@ -66,7 +46,6 @@ else:
 # Task Scheduler on Windows.
 dataDirectory = fDirectory + "\\data"
 fName = dataDirectory + f"\\{currTime}.csv"
-# If data directory does not exist, create it.
 
 if not os.path.exists(dataDirectory):
     os.makedirs(dataDirectory)
