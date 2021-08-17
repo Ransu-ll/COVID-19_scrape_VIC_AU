@@ -20,13 +20,16 @@ def create_visual():
     # General plot details
     plt.title("COVID graph")
     plt.tick_params(axis='x', rotation=90)
+    plt.margins(y=0.3)
+
     # Plotting information
     active = plt.bar(date_list, active_list, label="active cases")
     total = plt.bar(date_list, new_list, label="new cases")
-    plt.legend()  # Can only be put after data is plotted
+    plt.legend(bbox_to_anchor=(-0.01, 1.15), loc="upper left")  # Can only be put after data is plotted
+
     # Bar labels
-    plt.bar_label(active, label_type="edge")
-    plt.bar_label(total, label_type="edge")
+    plt.bar_label(active, label_type="edge", padding=3, rotation=90)
+    plt.bar_label(total, label_type="edge", padding=3, rotation=90)
 
     # Save file
     file_location = f'{sd.dataDirectory}\\{sd.currTime}.png'
