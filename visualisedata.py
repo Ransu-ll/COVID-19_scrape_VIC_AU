@@ -20,7 +20,7 @@ def create_visual():
     # General plot details
     plt.title("COVID graph")
     plt.tick_params(axis='x', rotation=90)
-    plt.margins(y=0.3)
+    plt.margins(y=0.15)
 
     # Plotting information
     active = plt.bar(date_list, active_list, label="active cases")
