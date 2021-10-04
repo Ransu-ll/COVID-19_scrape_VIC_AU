@@ -73,7 +73,7 @@ def get_file_list(file_ext: str, include_samples: bool = False):
         return
 
 
-def clear_old(files: list = get_file_list(".csv"), file_count: int = 30):
+def clear_old(files: list = get_file_list(".csv"), file_count: int = 31):
     """Clear all the old files in a specified directory.
 
     `files` is the list of files to process
