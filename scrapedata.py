@@ -246,31 +246,3 @@ def take_info(file: str, column: ColNames):
 
     return postcode_custom
 
-
-def split_output(data: dict):
-    """Splits a larger dictionary into a list of smaller dictionaries
-
-    `data` is supposed to be postcode_custom
-
-    The intention of this is to ensure that the length of Discord messages
-    do not become too big. If it exceeds 2000 characters, the message will
-    not send.
-    """
-
-    list_len = len(data)
-
-    if list_len >= 700:
-        num_parts = 7
-    elif list_len >= 500:
-        num_parts = 5
-    elif list_len >= 300:
-        num_parts = 3
-    elif list_len >= 100:
-        num_parts = 2
-    else:
-        num_parts = 1
-
-    # I did not come up with the below code,
-    # this is some black magic being used!
-    return [dict(list(data.items())[i * list_len // num_parts:(i + 1) * list_len // num_parts])
-            for i in range(num_parts)]
