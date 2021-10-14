@@ -55,6 +55,26 @@ def split_output(data: dict):
             for i in range(num_parts)]
 
 
+def format_output(dict_list: List[dict], sep_post_value: str = ": ", sep: str = "\n"):
+    """Format the output
+
+    """
+
+    formatted_list = []
+
+    for dictionary in dict_list:
+        refined_string = ""
+        for key in dictionary.keys():
+            if dictionary[key] != 0:
+                refined_string = f"{refined_string}{key}{sep_post_value}{dictionary[key]}{sep}"
+                # Append the current string with new information
+        refined_string = refined_string[:len(refined_string) - len(sep)]
+        # Remove the trailing separator
+        formatted_list.append(refined_string)
+
+    return formatted_list
+
+
 def webhook(body: str, wrap_body: list = None,
             command: sd.take_info = None, wrap_command: List[DiscordMarkup] = None,
             file: str = None, id_url: int = urlID,
