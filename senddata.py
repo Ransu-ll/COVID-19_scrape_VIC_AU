@@ -9,8 +9,8 @@ from typing import List
 load_dotenv()
 
 # Webhook variables
-urlID = int(os.environ.get("WEBHOOK_ID"))
-urlToken = os.environ.get("WEBHOOK_TOKEN")
+urlID = int(os.environ.get("WEBHOOK_ID_TEST"))
+urlToken = os.environ.get("WEBHOOK_TOKEN_TEST")
 WHUsername = "COVID update"
 WHAvatar = "https://cdn.discordapp.com/attachments/762567501023281203/855114581571272724/cursedemoji.png"
 
@@ -24,16 +24,17 @@ class DiscordMarkup(Enum):
     CODEBLOCK = "```\n"
 
 
-def split_output(data: dict):
-    """Splits a larger dictionary into a list of smaller dictionaries
+def format_output(data: dict, sep_post_value: str = ": ", sep: str = "\n"):
+    """Format the output.
 
-    `data` is supposed to be postcode_custom
+    `data` is the raw dictionary, straight from the take_info() function.
+    `sep_post_value` is the value that goes between the postcode and the
+    value in the string.
+    `sep` is the value that goes between each pair of postcode and value.
 
-    The intention of this is to ensure that the length of Discord messages
-    do not become too big. If it exceeds 2000 characters, the message will
-    not send.
     """
 
+    # Split the output
     list_len = len(data)
 
     if list_len >= 700:
@@ -49,15 +50,10 @@ def split_output(data: dict):
 
     # I did not come up with the below code,
     # this is some black magic being used!
-    return [dict(list(data.items())[i * list_len // num_parts:(i + 1) * list_len // num_parts])
-            for i in range(num_parts)]
+    dict_list = [dict(list(data.items())[i * list_len // num_parts:(i + 1) * list_len // num_parts])
+                 for i in range(num_parts)]
 
-
-def format_output(dict_list: List[dict], sep_post_value: str = ": ", sep: str = "\n"):
-    """Format the output
-
-    """
-
+    # Format list of dictionaries into list of strings
     formatted_list = []
 
     for dictionary in dict_list:
@@ -74,7 +70,7 @@ def format_output(dict_list: List[dict], sep_post_value: str = ": ", sep: str = 
 
 
 def webhook(body: str, wrap_body: List[DiscordMarkup] = None,
-            data: list = None, wrap_command: List[DiscordMarkup] = None,
+            data: list or int = None, wrap_command: List[DiscordMarkup] = None,
             file: str = None, id_url: int = urlID,
             token_url: str = urlToken, wh_user: str = WHUsername,
             wh_avatar: str = WHAvatar, sep="\n"):
