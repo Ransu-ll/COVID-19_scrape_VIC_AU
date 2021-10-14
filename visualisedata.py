@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import scrapedata as sd
 
 
+# TODO: Fix this entire module, currently broken
 def create_visual():
     """Create visualisation based on number of new and total active cases"""
 
