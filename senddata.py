@@ -26,15 +26,6 @@ class DiscordMarkup(Enum):
     CODEBLOCK = "```\n"
 
 
-def wrap(self: list):
-    """Create a string based on a list of DiscordMarkup vars.
-
-    The list should be something like: [DiscordMarkup.ITALICS, DiscordMarkup.UNDERLINE]
-    """
-
-    return "".join([markup.value for markup in self])
-
-
 def webhook(body: str, wrap_body: list = None,
             command: sd.take_info = None, wrap_command: List[DiscordMarkup] = None,
             file: str = None, id_url: int = urlID,
@@ -52,6 +43,14 @@ def webhook(body: str, wrap_body: list = None,
     `wh_avatar` is the avatar to be displayed - must be a URL.
     `sep` is the variable used to separate the `body` and `command`.
     """
+
+    def wrap(self: List[DiscordMarkup]):
+        """Create a string based on a list of DiscordMarkup vars.
+
+        The list should be something like: [DiscordMarkup.ITALICS, DiscordMarkup.UNDERLINE]
+        """
+
+        return "".join([markup.value for markup in self])
 
     if wrap_body:
         # Wrap the body in something to format it for display.
