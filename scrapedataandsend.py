@@ -10,7 +10,6 @@ scr.clear_old(scr.get_file_list(".png"), 3)
 scr.scrape_data(scr.fName)
 dataDate = scr.date_info(scr.fName)['dataDate']
 processedDate = scr.date_info(scr.fName)['processedDate']
-# fileLocation = vis.create_visual()
 
 # Total values
 activeTotal = pro.analysis_total(scr.fName, scr.ColNames.ACTIVE_CASES)
@@ -31,5 +30,4 @@ if scr.updatedData:
                 activeTotal, [sen.DiscordMarkup.BOLDED])
     sen.webhook("Total new cases:", [sen.DiscordMarkup.CODEBLOCK],
                 newTotal, [sen.DiscordMarkup.BOLDED])
-    # sen.webhook("Visualisation!", file=fileLocation)
-
+    sen.webhook("Visualisation", file=vis.create_visual())
