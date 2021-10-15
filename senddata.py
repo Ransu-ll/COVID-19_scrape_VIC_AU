@@ -9,8 +9,8 @@ from typing import List
 load_dotenv()
 
 # Webhook variables
-urlID = int(os.environ.get("WEBHOOK_ID_TEST"))
-urlToken = os.environ.get("WEBHOOK_TOKEN_TEST")
+urlID = int(os.environ.get("WEBHOOK_ID"))
+urlToken = os.environ.get("WEBHOOK_TOKEN")
 WHUsername = "COVID update"
 WHAvatar = "https://cdn.discordapp.com/attachments/762567501023281203/855114581571272724/cursedemoji.png"
 
