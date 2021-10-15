@@ -9,7 +9,7 @@ import csv
 import os
 import sys
 import time
-from enum import Enum, auto
+from enum import Enum
 
 import requests
 from bs4 import BeautifulSoup
@@ -73,7 +73,7 @@ def get_file_list(file_ext: str, include_samples: bool = False):
         return
 
 
-def clear_old(files: list = get_file_list(".csv"), file_count: int = 30):
+def clear_old(files: list = get_file_list(".csv"), file_count: int = 31):
     """Clear all the old files in a specified directory.
 
     `files` is the list of files to process
@@ -171,12 +171,12 @@ def scrape_data(file: str, url_spreadsheet: str = sourceSS):
         # collected data. If they are the same, rename fName to use the
         # last file's date, else write new file.
         try:
-            lastFile = get_file_list(".csv")[-1]
+            last_file = get_file_list(".csv")[-1]
         except TypeError:
-            lastFile = None
-        if date_info(lastFile)["processedDate"] == to_write_to[1][8]:
+            last_file = None
+        if date_info(last_file)["processedDate"] == to_write_to[1][8]:
             global fName
-            fName = lastFile
+            fName = last_file
             return
         else:
             global updatedData
@@ -210,35 +210,12 @@ class ColNames(Enum):
     PROCESSED_DATE = 8
 
 
-class Settings(Enum):
-    """Settings for the output of takeInfo.
-
-    - RAW returns the dictionary, in the form of
-    (postcode, specified column)
-    - SUM returns the sum of all values in a given column as as string.
-    - POSTCODES returns all postcodes that have a non-zero value in the
-    specified column as a string.
-    - REFINED returns all postcodes that have a non-zero value in the
-    specified column as well as the values within said columns as a
-    string.
-    """
-
-    RAW = auto()
-    SUM = auto()
-    POSTCODES = auto()
-    REFINED = auto()
-
-
-def take_info(file: str, column: ColNames, setting: Settings, sep="\n"):
+def take_info(file: str, column: ColNames):
     """Takes information and returns either an int, a string or a dict.
 
     `file` is the location of the csv file
     `column` is the column to be selected
-    `setting` has four possible options: raw, sum, postcodes and
-    refined.
-    raw -> dict, sum -> int, postcodes -> str, refined -> str
-    `sep` is the separator between each piece of data (if applicable)
-    
+
     Column info can be found below:
     postcode | population | active | cases | rate | new | band
     | data_date | file_processed_date
@@ -267,34 +244,5 @@ def take_info(file: str, column: ColNames, setting: Settings, sep="\n"):
                 # Row titles are of the text type, so they need to be handled
                 continue
 
-    # Change return based on "setting" value specified
-    if setting == Settings.RAW:
-        # Returns raw dictionary
-        return postcode_custom
-    elif setting == Settings.SUM:
-        # Returns the sum of the column
-        if column == ColNames.BAND:
-            raise Exception("There is no point in obtaining the sum of bands.")
-        else:
-            value_sum = 0
-            for value in postcode_custom.values():
-                value_sum = value_sum + value
-            return value_sum
-    elif setting == Settings.POSTCODES:
-        # Returns only the affected postcodes
-        key_string = ""
-        for key in postcode_custom.keys():
-            if postcode_custom[key] != 0:
-                key_string = key_string + key + sep
-        key_string = key_string[:len(key_string) - len(sep)]
-        return key_string
-    elif setting == Settings.REFINED:
-        # Returns postcode and numbers
-        refined_string = ""
-        for key in postcode_custom.keys():
-            if postcode_custom[key] != 0:
-                refined_string = f"{refined_string}{key} - {postcode_custom[key]}{sep}"
-        refined_string = refined_string[:len(refined_string) - len(sep)]
-        return refined_string
-    else:
-        raise ValueError("Use setting as specified by the class Settings.")
+    return postcode_custom
+

@@ -1,37 +1,33 @@
-import scrapedata as scd
-import senddata as sed
-import visualisedata as vid
+import scrapedata as scr
+import senddata as sen
+import processdata as pro
 
-scd.clear_old(scd.get_file_list(".csv"))
-scd.clear_old(scd.get_file_list(".png"), 3)
-scd.scrape_data(scd.fName)
-dataDate = scd.date_info(scd.fName)['dataDate']
-processedDate = scd.date_info(scd.fName)['processedDate']
+import visualisedata as vis
 
-print(f"Processed date: {processedDate} | Data date: {dataDate}")
-print("Active cases areas:", scd.take_info(scd.fName, scd.ColNames.ACTIVE_CASES, scd.Settings.REFINED), sep="\n")
-print("Active cases:", scd.take_info(scd.fName, scd.ColNames.ACTIVE_CASES, scd.Settings.SUM), sep=" ")
-print("New cases:", scd.take_info(scd.fName, scd.ColNames.NEW_CASES, scd.Settings.SUM, sep="\n"), sep=" ")
+# Housekeeping
+scr.clear_old(scr.get_file_list(".csv"))
+scr.clear_old(scr.get_file_list(".png"), 3)
+scr.scrape_data(scr.fName)
+dataDate = scr.date_info(scr.fName)['dataDate']
+processedDate = scr.date_info(scr.fName)['processedDate']
 
-try:
-    if scd.updatedData:
-        sed.webhook(f"Last updated: {processedDate}" + "\n" + f"Data date: {dataDate}", [sed.DiscordMarkup.UNDERLINE])
-        sed.webhook("Active cases areas:\n(format: postcode - # of cases)", [sed.DiscordMarkup.CODEBLOCK],
-                    scd.take_info(scd.fName, scd.ColNames.ACTIVE_CASES, scd.Settings.REFINED),
-                    [sed.DiscordMarkup.BOLDED], sep="")
-        sed.webhook("Total active cases:", [sed.DiscordMarkup.CODEBLOCK],
-                    scd.take_info(scd.fName, scd.ColNames.ACTIVE_CASES, scd.Settings.SUM),
-                    [sed.DiscordMarkup.BOLDED], sep="")
-        sed.webhook("Total new cases:", [sed.DiscordMarkup.CODEBLOCK],
-                    scd.take_info(scd.fName, scd.ColNames.NEW_CASES, scd.Settings.SUM),
-                    [sed.DiscordMarkup.BOLDED], sep="")
-        sed.webhook(scd.postcodeInfo)
-        fileLocation = vid.create_visual()
-        sed.webhook("", file=fileLocation)
-        print("Webhooks sent!")
-    else:
-        print("Webhooks not sent.")
+# Total values
+activeTotal = pro.analysis_total(scr.fName, scr.ColNames.ACTIVE_CASES)
+newTotal = pro.analysis_total(scr.fName, scr.ColNames.NEW_CASES)
 
-except Exception as E:
-    print("Something went wrong with sending the data.")
-    print(E)
+# Active Cases suburb listing
+activeCasesRaw = scr.take_info(scr.fName, scr.ColNames.ACTIVE_CASES)
+aCFormatted = sen.format_output(activeCasesRaw)
+
+if scr.updatedData:
+    sen.webhook(f"Last updated: {processedDate}" + "\n" + f"Data date: {dataDate}", [sen.DiscordMarkup.UNDERLINE])
+    sen.webhook("Active cases areas:\n(format: postcode: # of cases", [sen.DiscordMarkup.CODEBLOCK])
+    for i in range(len(aCFormatted)):
+        sen.webhook(f"Part {i}", [sen.DiscordMarkup.UNDERLINE],
+                    aCFormatted[i], [sen.DiscordMarkup.BOLDED])
+    sen.webhook(scr.postcodeInfo)
+    sen.webhook("Total active cases:", [sen.DiscordMarkup.CODEBLOCK],
+                activeTotal, [sen.DiscordMarkup.BOLDED])
+    sen.webhook("Total new cases:", [sen.DiscordMarkup.CODEBLOCK],
+                newTotal, [sen.DiscordMarkup.BOLDED])
+    sen.webhook("Visualisation", file=vis.create_visual())

@@ -1,7 +1,8 @@
 """A module for visualising data in a folder"""
 
 from matplotlib import pyplot as plt
-import scrapedata as sd
+import scrapedata as scr
+import processdata as pro
 
 
 def create_visual():
@@ -12,10 +13,10 @@ def create_visual():
     new_list = []
     date_list = []
 
-    for file in sd.get_file_list(".csv"):
-        active_list.append(sd.take_info(file, sd.ColNames.ACTIVE_CASES, sd.Settings.SUM))
-        new_list.append(sd.take_info(file, sd.ColNames.NEW_CASES, sd.Settings.SUM))
-        date_list.append(sd.date_info(file)["dataDate"])
+    for file in scr.get_file_list(".csv"):
+        active_list.append(pro.analysis_total(file, scr.ColNames.ACTIVE_CASES))
+        new_list.append(pro.analysis_total(file, scr.ColNames.NEW_CASES))
+        date_list.append(scr.date_info(file)["dataDate"])
 
     # General plot details
     plt.title("COVID graph")
@@ -32,7 +33,7 @@ def create_visual():
     plt.bar_label(total, label_type="edge", padding=3, rotation=90)
 
     # Save file
-    file_location = f'{sd.dataDirectory}\\{sd.currTime}.png'
+    file_location = f'{scr.dataDirectory}\\{scr.currTime}.png'
     plt.savefig(file_location, dpi=300, bbox_inches="tight")
 
     return file_location
