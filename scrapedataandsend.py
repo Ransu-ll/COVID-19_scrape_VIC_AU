@@ -21,7 +21,7 @@ aCFormatted = sen.format_output(activeCasesRaw)
 
 if scr.updatedData:
     sen.webhook(f"Last updated: {processedDate}" + "\n" + f"Data date: {dataDate}", [sen.DiscordMarkup.UNDERLINE])
-    sen.webhook("Active cases areas:\n(format: postcode: # of cases", [sen.DiscordMarkup.CODEBLOCK])
+    sen.webhook("Active cases areas:\n(format: postcode: # of cases)", [sen.DiscordMarkup.CODEBLOCK])
     for i in range(len(aCFormatted)):
         sen.webhook(f"Part {i}", [sen.DiscordMarkup.UNDERLINE],
                     aCFormatted[i], [sen.DiscordMarkup.BOLDED])
