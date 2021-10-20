@@ -7,6 +7,8 @@ import visualisedata as vis
 # Housekeeping
 scr.clear_old(scr.get_file_list(".csv"))
 scr.clear_old(scr.get_file_list(".png"), 3)
+
+# Data scraping and information gathering
 scr.scrape_data(scr.fName)
 dataDate = scr.date_info(scr.fName)['dataDate']
 processedDate = scr.date_info(scr.fName)['processedDate']
