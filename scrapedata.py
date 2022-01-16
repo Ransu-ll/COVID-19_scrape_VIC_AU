@@ -7,9 +7,9 @@ format.
 
 import csv
 import os
-import sys
 import time
 from enum import Enum
+import pathlib
 
 import requests
 from bs4 import BeautifulSoup
@@ -31,21 +31,9 @@ sourceSS = "https://docs.google.com/spreadsheets/d/e/2PACX" \
 # Above: Where the spreadsheet is located
 
 
-# Directory variables
-if sys.argv[0].endswith("pydevconsole.py"):
-    # For some reason, sys.argv[0] does not return the location of this script when ran in the PyCharm
-    # console, hence the need for this.
-    fDirectory = os.getcwd()
-else:
-    fDirectory = sys.argv[0][0:len(sys.argv[0]) - len(os.path.basename(sys.argv[0])) - 1]
-# ^ Get the directory of this Python file, without the slash.
-# This looked convoluted as hell, I wonder if there's another way of
-# doing this.
-# This whole thing is needed to allow this file to work when there is
-# a different current working directory (for example, running it from
-# Task Scheduler on Windows.
-dataDirectory = fDirectory + "\\data"
-fName = dataDirectory + f"\\{currTime}.csv"
+fDirectory = pathlib.Path(__file__).parent.absolute()
+dataDirectory = pathlib.PurePath(fDirectory, "data")
+fName = pathlib.PurePath(dataDirectory, f"{currTime}.csv")
 
 if not os.path.exists(dataDirectory):
     os.makedirs(dataDirectory)
@@ -64,7 +52,7 @@ def get_file_list(file_ext: str, include_samples: bool = False):
     if "SAMPLE.csv" in list_of_files and not include_samples:
         list_of_files.remove("SAMPLE.csv")  # SAMPLE.csv is an example of the format.
 
-    full_path = [dataDirectory + f"\\{x}" for x in list_of_files if x.endswith(file_ext)]
+    full_path = [str(pathlib.Path(dataDirectory, f"{x}")) for x in list_of_files if x.endswith(file_ext)]
 
     # If there is 1 or more files of the .csv type, execute following.
     if full_path:
@@ -245,4 +233,3 @@ def take_info(file: str, column: ColNames):
                 continue
 
     return postcode_custom
-
