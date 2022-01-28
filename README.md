@@ -8,12 +8,19 @@ column. That information can then be sent to a service that supports webhook, su
 ---
 ## Getting started
 
-To begin, clone this repository, then create a `.env` file with keywords `WEBHOOK_ID` and `WEBHOOK_TOKEN` equal to the 
-ID and the Token of the webhook link, respectively.
-The URL webhook link should be in the format of https://discordapp.com/api/webhooks/ID/TOKEN.
+1. Clone this repository or download it.
+2. Create `.env` file, fill the details after a webhook on Discord has been made.
+It should appear as follows:
+```
+WEBHOOK_ID=[ID]
+WEBHOOK_TOKEN=[TOKEN]
+```
+Replace `[ID]` with the ID and `[TOKEN]` with the token.
 
-From here, you can take a look at `scrapedataandsend.py` - it imports the rest of the modules and is the file that
-should be run directly.
+The URL webhook link should be in the format of https://discordapp.com/api/webhooks/[ID]/[TOKEN], so find the information there!
+
+3. From here, you can take a look at `scrapedataandsend.py` - it imports the rest of the modules and is the file that should be run directly.
+
 `scrapedataandsend.py` displays most of the features you will likely need - how to tell the program to remove any old 
 files (no more than 30 files by default), scrape data (and which file to write to), interpret the data, determine if the
 data has already been updated and if not, create a new file and send webhooks to a certain URL.
