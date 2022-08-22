@@ -25,12 +25,12 @@ def create_visual():
 
     # Plotting information
     active = plt.bar(date_list, active_list, label="active cases")
-    total = plt.bar(date_list, new_list, label="new cases")
+    new = plt.bar(date_list, new_list, label="new cases")
     plt.legend(bbox_to_anchor=(-0.01, 1.15), loc="upper left")  # Can only be put after data is plotted
 
     # Bar labels
-    plt.bar_label(active, label_type="edge", padding=3, rotation=90)
-    plt.bar_label(total, label_type="edge", padding=3, rotation=90)
+    plt.bar_label(active, label_type="edge", padding=3, rotation=90, color="#1F77B4")
+    plt.bar_label(new, label_type="edge", padding=3, rotation=90, color="#FF7F0E")
 
     # Save file
     file_location = f'{scr.dataDirectory}\\{scr.currTime}.png'
